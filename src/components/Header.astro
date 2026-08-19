@@ -1,0 +1,72 @@
+---
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header class="site-header">
+    <nav>
+        <a href="/" class="logo">frobbyfoo</a>
+
+        <div class="links">
+            <HeaderLink href="/posts">Articles</HeaderLink>
+            <HeaderLink href="/projects">Projects</HeaderLink>
+            <HeaderLink href="/about">About</HeaderLink>
+        </div>
+    </nav>
+</header>
+
+<style>
+    .site-header {
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+
+        max-width: 760px;
+        margin-inline: auto;
+        padding: 1.5rem;
+    }
+
+    .logo {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+
+        color: var(--color-heading);
+        text-decoration: none;
+    }
+
+    .links {
+        display: flex;
+        gap: 1.75rem;
+    }
+
+    .links :global(a) {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+
+        color: var(--color-text);
+        text-decoration: none;
+
+        transition: color 150ms ease;
+    }
+
+    .links :global(a:hover) {
+        color: var(--color-warm);
+    }
+
+    .links :global(a.active) {
+        color: var(--color-green);
+        font-weight: 500;
+    }
+
+    @media (max-width: 500px) {
+        .links {
+            gap: 1rem;
+        }
+    }
+</style>

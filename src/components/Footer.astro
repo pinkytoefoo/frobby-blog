@@ -1,0 +1,45 @@
+<footer class="site-footer">
+  <p>&copy; 2026 frobbyfoo</p>
+
+  <div class="social">
+    <a href="https://github.com/frobbyfoo">GitHub</a>
+    <a href="https://youtube.com/@frobbyfoo">YouTube</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    width: min(100% - 2rem, var(--site-width));
+    margin: 0 auto;
+    padding: 2rem 0;
+
+    border-top: 1px solid var(--color-border);
+
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+
+    color: var(--color-muted);
+  }
+
+  .social {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .social a {
+    color: var(--color-text);
+    text-decoration: none;
+
+    transition: color 150ms ease;
+  }
+
+  .social a:hover {
+    color: var(--color-warm);
+  }
+</style>

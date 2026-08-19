@@ -1,0 +1,405 @@
+---
+layout: ../../layouts/BlogPost.astro
+
+title: "Installing Arch Linux ... Calmly"
+description: "arch demystified (without arch-install)"
+date: 2026-08-18
+---
+
+The examples below assume:
+* A UEFI-based system
+* `/dev/sda` is the target disk
+* A 1 GiB EFI system partition
+* A 4 GiB swap partition
+* The remainder of the disk is used as the root filesystem
+* The desired hostname is `arch`
+* The primary user is `minman`
+
+> **Warning:** The partitioning commands in this guide can destroy existing data. Make absolutely sure `/dev/sda` is the correct disk before proceeding.
+
+## 1. Configure the Locale
+
+Start by configuring the locale that will be used by the installed system.
+
+```bash
+nano /etc/locale.gen
+```
+
+Find:
+
+```text
+#en_US.UTF-8 UTF-8
+```
+
+and uncomment it:
+
+```text
+en_US.UTF-8 UTF-8
+```
+
+Then configure the default language:
+
+```bash
+nano /etc/locale.conf
+```
+
+Add:
+
+```text
+LANG=en_US.UTF-8
+```
+
+Generate the locale:
+
+```bash
+locale-gen
+```
+
+## 2. Partition the Disk
+
+Use `cfdisk` to create the required partitions:
+
+```bash
+cfdisk /dev/sda
+```
+
+Create three partitions:
+
+| Partition   |            Size | Purpose               |
+| ----------- | --------------: | --------------------- |
+| `/dev/sda1` |           1 GiB | EFI System Partition  |
+| `/dev/sda2` |           4 GiB | Swap                  |
+| `/dev/sda3` | Remaining space | Linux root filesystem |
+
+For a UEFI installation, make sure `/dev/sda1` has the appropriate **EFI System** partition type.
+
+Once the partitions have been created, write the changes and exit `cfdisk`.
+
+## 3. Create the Filesystems
+
+Format the root partition as ext4:
+
+```bash
+mkfs.ext4 /dev/sda3
+```
+
+Format the EFI partition as FAT32:
+
+```bash
+mkfs.fat -F 32 /dev/sda1
+```
+
+Initialize the swap partition:
+
+```bash
+mkswap /dev/sda2
+```
+
+## 4. Mount the New System
+
+Mount the root filesystem at `/mnt`:
+
+```bash
+mount /dev/sda3 /mnt
+```
+
+Create the EFI mount point if necessary:
+
+```bash
+mkdir -p /mnt/boot/efi
+```
+
+Then mount the EFI partition:
+
+```bash
+mount /dev/sda1 /mnt/boot/efi
+```
+
+Enable the swap partition:
+
+```bash
+swapon /dev/sda2
+```
+
+At this point, the basic filesystem layout is ready for the installation.
+
+## 5. Install the Base System
+
+Install Arch Linux and the packages needed for a basic working installation:
+
+```bash
+pacstrap -K /mnt base linux linux-firmware nano base-devel efibootmgr grub networkmanager
+```
+
+This installs the Linux kernel, firmware, essential development tools, networking support, and GRUB.
+
+## 6. Generate the Filesystem Table
+
+Generate an `fstab` based on the filesystems currently mounted under `/mnt`:
+
+```bash
+genfstab /mnt > /mnt/etc/fstab
+```
+
+It is a good idea to inspect the generated file:
+
+```bash
+nano /mnt/etc/fstab
+```
+
+Make sure the root and EFI filesystems, along with swap, appear as expected.
+
+## 7. Enter the New Installation
+
+Switch from the live environment into the newly installed system:
+
+```bash
+arch-chroot /mnt
+```
+
+From this point onward, commands are being executed inside the installed Arch system rather than the installation USB environment.
+
+## 8. Configure the Timezone
+
+You can search for available timezones with:
+
+```bash
+timedatectl list-timezones
+```
+
+For Eastern Time, for example:
+
+```bash
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+```
+
+Then synchronize the hardware clock:
+
+```bash
+hwclock --systohc
+```
+
+## 9. Configure the Hostname
+
+Set the machine's hostname:
+
+```bash
+nano /etc/hostname
+```
+
+For example:
+
+```text
+arch
+```
+
+Save the file and exit.
+
+## 10. Set the Root Password
+
+Set a password for the root account:
+
+```bash
+passwd
+```
+
+Enter the desired password when prompted.
+
+## 11. Create a Regular User
+
+Create the user `minman` and add them to the `wheel` group:
+
+```bash
+useradd -m -G wheel minman
+```
+
+Set the user's password:
+
+```bash
+passwd minman
+```
+
+Next, configure `sudo` access.
+
+Install sudo if it is not already present:
+
+```bash
+pacman -S sudo
+```
+
+Then open the sudoers configuration:
+
+```bash
+EDITOR=nano visudo
+```
+
+Find:
+
+```text
+# %wheel ALL=(ALL:ALL) ALL
+```
+
+and uncomment it:
+
+```text
+%wheel ALL=(ALL:ALL) ALL
+```
+
+The `minman` user can now use `sudo` after logging in.
+
+## 12. Enable Networking
+
+Enable NetworkManager so networking starts automatically when the system boots:
+
+```bash
+systemctl enable NetworkManager
+```
+
+You can later use `nmcli` or another NetworkManager frontend to configure the connection.
+
+## 13. Configure a Login Manager
+
+The original notes mention:
+
+```bash
+systemctl enable ly@ttyX.service
+```
+
+If you intend to use **Ly** as the terminal login manager, install it first and replace `ttyX` with the appropriate TTY configuration.
+
+For a standard installation, however, you can simply use the normal `getty` service provided by systemd:
+
+```bash
+systemctl enable getty@tty1.service
+```
+
+There is also an original note for:
+
+```bash
+systemctl enable ssd
+```
+
+This appears to be a typo or an incomplete service name. Do not enable a service named `ssd` unless you have specifically installed a package that provides that service.
+
+## 14. Install and Configure GRUB
+
+For a UEFI installation, install GRUB to the EFI system partition:
+```bash
+grub-install
+```
+
+Then generate the GRUB configuration:
+
+```bash
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+If `grub-install` reports an EFI-related error, verify that the system was booted in UEFI mode and that `/boot/efi` is mounted correctly.
+
+## 15. Setting Up Dual Boot
+
+If Windows or another operating system is already installed and you want GRUB to detect it, install `os-prober`:
+
+```bash
+pacman -S os-prober
+```
+
+Then edit the GRUB configuration:
+
+```bash
+nano /etc/default/grub
+```
+
+Depending on your current Arch/GRUB setup, enable OS detection by adding or uncommenting:
+
+```text
+GRUB_DISABLE_OS_PROBER=false
+```
+
+Save the file and regenerate the GRUB configuration:
+
+```bash
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+If another operating system was detected, its boot entry should appear in the generated configuration.
+
+## 16. Leave the Chroot
+
+Once the installation is configured, leave the installed system:
+
+```bash
+exit
+```
+
+You are now back in the Arch installation environment.
+
+## 17. Unmount the Filesystems
+
+Unmount everything mounted below `/mnt`:
+
+```bash
+umount -R /mnt
+```
+
+If you enabled swap and want to explicitly disable it before rebooting:
+
+```bash
+swapoff /dev/sda2
+```
+
+## 18. Reboot
+
+Remove the Arch installation USB and reboot:
+
+```bash
+reboot
+```
+
+If everything was configured correctly, the machine should boot into the newly installed Arch Linux system through GRUB.
+
+## After the First Boot
+
+Log in using the user created during installation:
+
+```text
+minman
+```
+
+Then verify that networking is working:
+
+```bash
+ip addr
+```
+
+and:
+
+```bash
+systemctl status NetworkManager
+```
+
+Update the system before installing additional software:
+
+```bash
+sudo pacman -Syu
+```
+
+From here, the installation can be extended with a desktop environment or window manager, graphics drivers, audio, Bluetooth, additional fonts, development tools, and other software.
+
+## A Note About This Installation
+
+This is intentionally a relatively minimal Arch installation. Arch does not install a graphical desktop, display server, audio stack, or other desktop components automatically. That gives you control over what gets installed, but it also means that the post-installation setup is largely up to you.
+
+The important part is understanding what each stage accomplishes:
+
+1. **Partition the disk**
+2. **Create filesystems**
+3. **Mount the new system**
+4. **Install the base packages**
+5. **Generate `fstab`**
+6. **Configure the installed system from `arch-chroot`**
+7. **Create users and configure networking**
+8. **Install a bootloader**
+9. **Unmount and reboot**
+
+Once those pieces are in place, you have a functioning foundation on which to build the rest of your Arch Linux setup.

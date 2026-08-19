@@ -1,0 +1,136 @@
+{
+  "$schema": "https://raw.githubusercontent.com/shikijs/shiki/main/packages/themes/schema.json",
+  "name": "mountain",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#222222",
+    "editor.foreground": "#cacaca",
+    "editorCursor.foreground": "#cacaca",
+    "editor.lineHighlightBackground": "#191919",
+    "editor.selectionBackground": "#262626",
+    "editorLineNumber.foreground": "#4c4c4c",
+    "editorLineNumber.activeForeground": "#cacaca"
+  },
+  "tokenColors": [
+    {
+      "name": "Comments",
+      "scope": [
+        "comment",
+        "punctuation.definition.comment"
+      ],
+      "settings": {
+        "foreground": "#4c4c4c",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "name": "Strings",
+      "scope": [
+        "string",
+        "punctuation.definition.string"
+      ],
+      "settings": {
+        "foreground": "#aca885"
+      }
+    },
+    {
+      "name": "Numbers & Constants",
+      "scope": [
+        "constant.numeric",
+        "constant.language",
+        "constant.character",
+        "constant.other"
+      ],
+      "settings": {
+        "foreground": "#ceb188"
+      }
+    },
+    {
+      "name": "Keywords & Storage",
+      "scope": [
+        "keyword",
+        "storage.type",
+        "storage.modifier",
+        "keyword.operator.word"
+      ],
+      "settings": {
+        "foreground": "#ac8a8c"
+      }
+    },
+    {
+      "name": "Operators & Punctuation",
+      "scope": [
+        "keyword.operator",
+        "punctuation",
+        "meta.brace"
+      ],
+      "settings": {
+        "foreground": "#cacaca"
+      }
+    },
+    {
+      "name": "Functions & Methods",
+      "scope": [
+        "entity.name.function",
+        "support.function",
+        "meta.function-call"
+      ],
+      "settings": {
+        "foreground": "#8f9a8a"
+      }
+    },
+    {
+      "name": "Variables & Parameters",
+      "scope": [
+        "variable",
+        "meta.parameter.type.variable",
+        "variable.parameter"
+      ],
+      "settings": {
+        "foreground": "#cacaca"
+      }
+    },
+    {
+      "name": "Types, Classes, & Structs",
+      "scope": [
+        "entity.name.type",
+        "entity.name.class",
+        "entity.name.struct",
+        "support.type",
+        "support.class"
+      ],
+      "settings": {
+        "foreground": "#ceb188"
+      }
+    },
+    {
+      "name": "Preprocessor / Macros (C/C++)",
+      "scope": [
+        "meta.preprocessor",
+        "entity.name.function.preprocessor",
+        "keyword.control.directive"
+      ],
+      "settings": {
+        "foreground": "#c6a08f"
+      }
+    },
+    {
+      "name": "Tags (HTML/JSX)",
+      "scope": [
+        "entity.name.tag"
+      ],
+      "settings": {
+        "foreground": "#ac8a8c"
+      }
+    },
+    {
+      "name": "Attributes",
+      "scope": [
+        "entity.other.attribute-name"
+      ],
+      "settings": {
+        "foreground": "#ceb188"
+      }
+    }
+  ]
+}

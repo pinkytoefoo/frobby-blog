@@ -1,0 +1,49 @@
+---
+import Layout from "./Layout.astro";
+import "../styles/blog-post.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  date: Date;
+}
+
+const { title, description, date } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <main class="post-container">
+    <article class="blog-post">
+      <header class="post-header">
+        <div class="post-meta">
+          <span>Article</span>
+          <span class="separator">·</span>
+          <time datetime={date.toISOString()}>
+            {date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+          <span class="separator">·</span>
+          <span>6 min read</span>
+        </div>
+
+        <h1>{title}</h1>
+
+        {
+          description && (
+            <p class="description">
+              {description}
+            </p>
+          )
+        }
+        <hr />
+      </header>
+
+      <div class="content">
+        <slot />
+      </div>
+    </article>
+  </main>
+</Layout>

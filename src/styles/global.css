@@ -1,0 +1,104 @@
+/* @font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Medium.woff2") format("woff2");
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Propo";
+  src: url("/fonts/Propo-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Propo";
+  src: url("/fonts/Propo-Medium.woff2") format("woff2");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+} */
+
+:root {
+  /* Fonts */
+
+  --font-reading: "GeistMono Nerd Font Propo", sans-serif;
+  --font-mono: "GeistMono Nerd Font Mono", monospace;
+
+  /* Mountain */
+
+  --color-bg: #0f0f0f;
+  --color-surface: #151515;
+  --color-surface-raised: #1b1b1b;
+  --color-border: #292929;
+
+  --color-text: #d8d8d8;
+  --color-heading: #e6e6e6;
+  --color-muted: #535353;
+
+  --color-green: #8aac8b;
+  --color-blue: #91b2b3;
+  --color-purple: #a5a0c2;
+  --color-yellow: #b1ae8f;
+  --color-warm: #d8bb92;
+  --color-red: #b18f91;
+
+  color-scheme: dark;
+}
+
+/* --------------------------------
+   Reset
+   -------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-bg);
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* --------------------------------
+   Selection
+   -------------------------------- */
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-bg);
+}

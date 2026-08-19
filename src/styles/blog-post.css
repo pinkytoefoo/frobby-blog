@@ -1,0 +1,267 @@
+/* --------------------------------
+   Article layout
+   -------------------------------- */
+
+.post-container {
+  width: 100%;
+  padding: 5rem 1.5rem 6rem;
+}
+
+.blog-post {
+  width: min(100%, 760px);
+  margin-inline: auto;
+}
+
+/* --------------------------------
+   Header
+   -------------------------------- */
+
+.post-header {
+  margin-bottom: 4rem;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  margin-bottom: 1.25rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  color: var(--color-green);
+}
+
+.post-meta .separator {
+  color: var(--color-muted);
+}
+
+.post-header h1 {
+  margin: 0;
+
+  font-family: var(--font-mono);
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+
+  color: var(--color-heading);
+}
+
+.description {
+  max-width: 640px;
+  margin: 1.5rem 0 0;
+
+  font-family: var(--font-reading);
+  font-size: 1.2rem;
+  line-height: 1.65;
+
+  color: var(--color-purple);
+}
+
+/* --------------------------------
+   Article content
+   -------------------------------- */
+
+.content {
+  max-width: 700px;
+
+  color: var(--color-text);
+
+  font-family: var(--font-reading);
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.content p {
+  margin: 0 0 1.5rem;
+}
+
+/* --------------------------------
+   Headings
+   -------------------------------- */
+
+.content h2 {
+  margin: 4rem 0 1.25rem;
+
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+
+  color: var(--color-heading);
+}
+
+.content h3 {
+  margin: 3rem 0 1rem;
+
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.35;
+
+  color: var(--color-heading);
+}
+
+/* --------------------------------
+   Links
+   -------------------------------- */
+
+.content a {
+  color: var(--color-blue);
+
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+
+  transition: color 150ms ease;
+}
+
+.content a:hover {
+  color: var(--color-warm);
+}
+
+/* --------------------------------
+   Emphasis
+   -------------------------------- */
+
+.content strong {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.content em {
+  color: var(--color-yellow);
+}
+
+/* --------------------------------
+   Lists
+   -------------------------------- */
+
+.content ul,
+.content ol {
+  margin: 0 0 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.content li {
+  margin-bottom: 0.6rem;
+}
+
+/* --------------------------------
+   Blockquotes
+   -------------------------------- */
+
+.content blockquote {
+  margin: 2rem 0;
+  padding: 0.25rem 0 0.25rem 1.5rem;
+
+  border-left: 2px solid var(--color-green);
+
+  color: var(--color-purple);
+}
+
+/* --------------------------------
+   Inline code
+   -------------------------------- */
+
+.content :not(pre) > code {
+  padding: 0.15em 0.35em;
+
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+
+  background: var(--color-surface);
+
+  color: var(--color-warm);
+
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+/* --------------------------------
+   Code blocks
+   -------------------------------- */
+
+/* No width/negative-margin bleed here on purpose: leaving width unset
+   means the block defaults to 100% of .content, so it lines up exactly
+   with paragraph text and the <hr> instead of breaking out further. */
+.content .astro-code {
+  margin: 2.5rem 0;
+
+  overflow-x: auto;
+
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+
+  background: var(--color-surface) !important;
+
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.content pre {
+  margin: 0;
+  padding: 1.5rem 2rem;
+}
+
+.content code {
+  font-family: "GeistMono Nerd Font Mono";
+  font-size: 0.875rem;
+  line-height: 1.7;
+
+  tab-size: 4;
+}
+
+/* --------------------------------
+   Images
+   -------------------------------- */
+
+.content img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  margin: 2.5rem 0;
+
+  border-radius: 6px;
+}
+
+/* --------------------------------
+   Horizontal rule
+   -------------------------------- */
+
+.content hr {
+  margin: 3rem 0;
+
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+/* --------------------------------
+   Mobile
+   -------------------------------- */
+
+@media (max-width: 760px) {
+  .post-container {
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  .post-header {
+    margin-bottom: 3rem;
+  }
+
+  .content {
+    font-size: 1.05rem;
+  }
+
+  .content .astro-code pre {
+    padding-inline: 1rem;
+  }
+}

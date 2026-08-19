@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = await getCollection("posts");
+
+const sortedPosts = posts.sort(
+  (a, b) =>
+    b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout title="Blog" description="My blog">
+  <main>
+    <h1>Blog</h1>
+
+    <ul>
+      {
+        sortedPosts.map((post) => (
+          <li>
+            <a href={`/posts/${post.id}`}>
+              {post.data.title}
+            </a>
+
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString()}
+            </time>
+
+            <p>{post.data.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>
