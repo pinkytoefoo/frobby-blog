@@ -5,31 +5,112 @@ import Layout from "../../layouts/Layout.astro";
 const posts = await getCollection("posts");
 
 const sortedPosts = posts.sort(
-  (a, b) =>
-    b.data.date.valueOf() - a.data.date.valueOf()
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 ---
 
-<Layout title="Blog" description="My blog">
-  <main>
-    <h1>Blog</h1>
+<Layout title="Articles" description="Articles by frobbyfoo">
+  <main class="posts-page">
+    <header>
+      <h1>Articles</h1>
+      <p>Things I've learned while building with computers.</p>
+    </header>
 
-    <ul>
-      {
-        sortedPosts.map((post) => (
-          <li>
+    <div class="posts">
+      {sortedPosts.map((post) => (
+        <article>
+          <time datetime={post.data.date.toISOString()}>
+            {post.data.date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+
+          <h2>
             <a href={`/posts/${post.id}`}>
               {post.data.title}
             </a>
+          </h2>
 
-            <time datetime={post.data.date.toISOString()}>
-              {post.data.date.toLocaleDateString()}
-            </time>
-
-            <p>{post.data.description}</p>
-          </li>
-        ))
-      }
-    </ul>
+          <p>{post.data.description}</p>
+        </article>
+      ))}
+    </div>
   </main>
 </Layout>
+
+<style>
+  .posts-page {
+    width: min(100% - 2rem, 760px);
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+  }
+
+  header {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    margin: 0;
+
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+
+    color: var(--color-heading);
+  }
+
+  header p {
+    margin-top: 1rem;
+
+    font-family: var(--font-reading);
+    color: var(--color-muted);
+  }
+
+  .posts {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .posts article {
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .posts article:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  time {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-green);
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0.5rem 0;
+
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  h2 a {
+    color: var(--color-heading);
+    text-decoration: none;
+  }
+
+  h2 a:hover {
+    color: var(--color-warm);
+  }
+
+  .posts p {
+    margin: 0;
+
+    font-family: var(--font-reading);
+    color: var(--color-muted);
+  }
+</style>

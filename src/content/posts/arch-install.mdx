@@ -1,10 +1,10 @@
 ---
-layout: ../../layouts/BlogPost.astro
-
 title: "Installing Arch Linux ... Calmly"
-description: "arch demystified (without arch-install)"
+description: "Demystified arch installation process (without arch-install)"
 date: 2026-08-18
 ---
+
+import Terminal from '../../components/Terminal.astro';
 
 The examples below assume:
 * A UEFI-based system
@@ -79,9 +79,9 @@ Once the partitions have been created, write the changes and exit `cfdisk`.
 
 Format the root partition as ext4:
 
-```bash
+<Terminal>
 mkfs.ext4 /dev/sda3
-```
+</Terminal>
 
 Format the EFI partition as FAT32:
 
@@ -273,13 +273,11 @@ For a standard installation, however, you can simply use the normal `getty` serv
 systemctl enable getty@tty1.service
 ```
 
-There is also an original note for:
+If you plan on using this machine remotely, it would be a good idea to enable ssh
 
 ```bash
-systemctl enable ssd
+systemctl enable sshd
 ```
-
-This appears to be a typo or an incomplete service name. Do not enable a service named `ssd` unless you have specifically installed a package that provides that service.
 
 ## 14. Install and Configure GRUB
 

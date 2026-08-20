@@ -1,6 +1,4 @@
 ---
-layout: ../../layouts/BlogPost.astro
-
 title: "What is [[no_unique_address]] in C++?"
 description: "A look at how C++ can have byteless allocators"
 date: 2026-08-18

@@ -4,7 +4,7 @@
 
 .post-container {
   width: 100%;
-  padding: 5rem 1.5rem 6rem;
+  padding: 5rem clamp(1.5rem, 4vw, 2.5rem) 6rem;
 }
 
 .blog-post {
@@ -67,14 +67,15 @@
    Article content
    -------------------------------- */
 
+/* No max-width here on purpose: .content now inherits the full
+   .blog-post width, same as .post-header and its <hr>, instead of
+   being narrower and left-flush inside it. */
 .content {
-  max-width: 700px;
-
   color: var(--color-text);
 
   font-family: var(--font-reading);
   font-size: 1.125rem;
-  line-height: 1.8;
+  line-height: 1.65;
 }
 
 .content p {
@@ -149,7 +150,7 @@
 }
 
 .content li {
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.1rem;
 }
 
 /* --------------------------------
@@ -163,6 +164,49 @@
   border-left: 2px solid var(--color-green);
 
   color: var(--color-purple);
+}
+
+/* --------------------------------
+   Tables
+   -------------------------------- */
+
+.content table {
+  display: block;
+  /* width: var(--site-width); */
+  margin: 2rem 0;
+
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.content th,
+.content td {
+  padding: 0.7rem 5rem 0.7rem 0;
+
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+.content th {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  color: var(--color-green);
+}
+
+.content th:last-child,
+.content td:last-child {
+  padding-right: 0;
+  white-space: normal;
 }
 
 /* --------------------------------
@@ -187,9 +231,6 @@
    Code blocks
    -------------------------------- */
 
-/* No width/negative-margin bleed here on purpose: leaving width unset
-   means the block defaults to 100% of .content, so it lines up exactly
-   with paragraph text and the <hr> instead of breaking out further. */
 .content .astro-code {
   margin: 2.5rem 0;
 
@@ -213,7 +254,7 @@
 .content code {
   font-family: "GeistMono Nerd Font Mono";
   font-size: 0.875rem;
-  line-height: 1.7;
+  line-height: 1.55;
 
   tab-size: 4;
 }
@@ -263,5 +304,10 @@
 
   .content .astro-code pre {
     padding-inline: 1rem;
+  }
+
+  .content th,
+  .content td {
+    padding-right: 1rem;
   }
 }

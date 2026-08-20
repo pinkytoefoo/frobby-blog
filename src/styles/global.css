@@ -54,6 +54,11 @@
   --color-warm: #d8bb92;
   --color-red: #b18f91;
 
+  --terminal-prompt-user: #7aa2f7;
+  --terminal-prompt-host: #9ece6a;
+  --terminal-prompt-path: #bb9af7;
+  --terminal-prompt-symbol: #f7768e;
+
   color-scheme: dark;
 }
 

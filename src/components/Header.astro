@@ -16,7 +16,19 @@ import HeaderLink from './HeaderLink.astro';
 
 <style>
     .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+
         border-bottom: 1px solid var(--color-border);
+
+        background: color-mix(
+            in srgb,
+            var(--color-background) 85%,
+            transparent
+        );
+
+        backdrop-filter: blur(12px);
     }
 
     nav {
@@ -25,9 +37,9 @@ import HeaderLink from './HeaderLink.astro';
         justify-content: space-between;
         gap: 1.5rem;
 
-        max-width: 760px;
+        width: min(100% - 2rem, 760px);
         margin-inline: auto;
-        padding: 1.5rem;
+        padding: 1.5rem 0;
     }
 
     .logo {
