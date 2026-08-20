@@ -4,53 +4,37 @@ description: "Demystified arch installation process (without arch-install)"
 date: 2026-08-18
 ---
 
-import Terminal from '../../components/Terminal.astro';
-
-The examples below assume:
-* A UEFI-based system
-* `/dev/sda` is the target disk
-* A 1 GiB EFI system partition
-* A 4 GiB swap partition
-* The remainder of the disk is used as the root filesystem
-* The desired hostname is `arch`
-* The primary user is `minman`
-
 > **Warning:** The partitioning commands in this guide can destroy existing data. Make absolutely sure `/dev/sda` is the correct disk before proceeding.
+{/* > **Note:** You can encrypt your data by obfuscating the data boundaries */}
 
 ## 1. Configure the Locale
 
 Start by configuring the locale that will be used by the installed system.
-
 ```bash
 nano /etc/locale.gen
 ```
 
 Find:
-
 ```text
 #en_US.UTF-8 UTF-8
 ```
 
 and uncomment it:
-
 ```text
 en_US.UTF-8 UTF-8
 ```
 
 Then configure the default language:
-
 ```bash
 nano /etc/locale.conf
 ```
 
 Add:
-
 ```text
 LANG=en_US.UTF-8
 ```
 
 Generate the locale:
-
 ```bash
 locale-gen
 ```
@@ -58,7 +42,6 @@ locale-gen
 ## 2. Partition the Disk
 
 Use `cfdisk` to create the required partitions:
-
 ```bash
 cfdisk /dev/sda
 ```
@@ -79,9 +62,9 @@ Once the partitions have been created, write the changes and exit `cfdisk`.
 
 Format the root partition as ext4:
 
-<Terminal>
+```bash
 mkfs.ext4 /dev/sda3
-</Terminal>
+```
 
 Format the EFI partition as FAT32:
 

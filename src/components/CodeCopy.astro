@@ -1,29 +1,3 @@
----
-import {
-  getCollection,
-  render,
-  type CollectionEntry,
-} from "astro:content";
-
-import BlogPost from "../../layouts/BlogPost.astro";
-
-export async function getStaticPaths() {
-  const posts = await getCollection("posts");
-
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
-}
-
-interface Props {
-  post: CollectionEntry<"posts">;
-}
-
-const { post } = Astro.props;
-const { Content } = await render(post);
----
-
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const codeBlocks = document.querySelectorAll('.content pre');
@@ -64,11 +38,3 @@ const { Content } = await render(post);
     });
   });
 </script>
-
-<BlogPost
-  title={post.data.title}
-  description={post.data.description}
-  date={post.data.date}
->
-  <Content />
-</BlogPost>
