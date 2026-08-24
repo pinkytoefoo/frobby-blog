@@ -1,11 +1,532 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = await getCollection("posts");
+
+const latestPosts = posts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="frobbyfoo - a conglomeration of my thoughts"
+  description="a place where i keep my thoughts organized"
+>
+  <main class="home">
+    <section class="hero">
+      <p class="eyebrow">HELLO, I'M FROBBYFOO</p>
+
+        <h1>
+            i try to make<br />
+            and learn cool <span>things.</span>
+        </h1>
+
+      <p class="intro">
+        notes on software, experiments, projects, and the occasional rabbit
+        hole.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="/posts">
+          read the articles
+          <span aria-hidden="true">→</span>
+        </a>
+
+        <a class="button button-secondary" href="/projects">
+          view projects
+        </a>
+      </div>
+    </section>
+
+    <section class="latest" aria-labelledby="latest-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-label">01 / WRITING</p>
+          <h2 id="latest-heading">Latest articles</h2>
+        </div>
+
+        <a href="/posts" class="view-all">
+          View all <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="posts">
+        {latestPosts.map((post, index) => (
+          <article class="post">
+            <div class="post-number">
+              {String(index + 1).padStart(2, "0")}
+            </div>
+
+            <div class="post-content">
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </time>
+
+              <h3>
+                <a href={`/posts/${post.id}`}>
+                  {post.data.title}
+                </a>
+              </h3>
+
+              <p>{post.data.description}</p>
+            </div>
+
+            <a
+              class="post-arrow"
+              href={`/posts/${post.id}`}
+              aria-label={`Read ${post.data.title}`}
+            >
+              ↗
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="about-strip">
+      <div>
+        <p class="section-label">02 / ELSEWHERE</p>
+        <h2>other than articles.</h2>
+      </div>
+
+      <p>
+        who i am, who i want to be, and what i do in my free-time.
+      </p>
+
+      <div class="strip-links">
+        <a href="/projects">
+          Projects <span>→</span>
+        </a>
+        <a href="/about">
+          About me <span>→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="terminal">
+      <div class="terminal-bar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="terminal-body">
+        <p>
+          <span class="prompt">frobbyfoo@localhost</span>
+          <span class="symbol">:</span>
+          <span class="path">~</span>
+          <span class="symbol">$</span>
+          <span class="command"> whoami</span>
+        </p>
+
+        <p class="terminal-output">
+          frobbyfoo (wow this terminal looks cool)
+        </p>
+
+        <p>
+          <span class="prompt">frobbyfoo@localhost</span>
+          <span class="symbol">:</span>
+          <span class="path">~</span>
+          <span class="symbol">$</span>
+          <span class="cursor"></span>
+        </p>
+      </div>
+    </section>
+  </main>
 </Layout>
+
+<style>
+  .home {
+    width: min(100% - 2rem, 760px);
+    margin: 0 auto;
+  }
+
+  /* Hero */
+
+  .hero {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 0 6rem;
+  }
+
+  .eyebrow,
+  .section-label {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--color-green);
+  }
+
+  h1 {
+    max-width: 700px;
+    margin: 1.25rem 0 1.5rem;
+
+    font-family: var(--font-mono);
+    font-size: clamp(3.2rem, 9vw, 6.5rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+    color: var(--color-heading);
+  }
+
+  h1 span {
+    color: var(--color-warm);
+  }
+
+  .intro {
+    max-width: 540px;
+    margin: 0;
+
+    font-family: var(--font-reading);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    padding: 0.8rem 1rem;
+
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-decoration: none;
+
+    border: 1px solid var(--color-border);
+
+    transition:
+      color 150ms ease,
+      border-color 150ms ease,
+      background 150ms ease,
+      transform 150ms ease;
+  }
+
+  .button:hover {
+    transform: translateY(-2px);
+  }
+
+  .button-primary {
+    color: var(--color-background);
+    background: var(--color-green);
+    border-color: var(--color-green);
+  }
+
+  .button-primary:hover {
+    background: var(--color-warm);
+    border-color: var(--color-warm);
+  }
+
+  .button-secondary {
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .button-secondary:hover {
+    color: var(--color-warm);
+    border-color: var(--color-warm);
+  }
+
+  /* Latest */
+
+  .latest {
+    padding: 5rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-heading h2,
+  .about-strip h2 {
+    margin: 0.5rem 0 0;
+
+    font-family: var(--font-mono);
+    font-size: 1.7rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    color: var(--color-heading);
+  }
+
+  .view-all {
+    flex-shrink: 0;
+
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .view-all:hover {
+    color: var(--color-warm);
+  }
+
+  .posts {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .post {
+    display: grid;
+    grid-template-columns: 2rem 1fr auto;
+    gap: 1.25rem;
+    align-items: start;
+
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .post-number {
+    padding-top: 0.15rem;
+
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-green);
+  }
+
+  .post-content time {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .post h3 {
+    margin: 0.45rem 0;
+
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .post h3 a {
+    color: var(--color-heading);
+    text-decoration: none;
+  }
+
+  .post h3 a:hover {
+    color: var(--color-warm);
+  }
+
+  .post p {
+    margin: 0;
+
+    font-family: var(--font-reading);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .post-arrow {
+    padding-top: 0.1rem;
+
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    text-decoration: none;
+
+    transition:
+      color 150ms ease,
+      transform 150ms ease;
+  }
+
+  .post:hover .post-arrow {
+    color: var(--color-warm);
+    transform: translate(2px, -2px);
+  }
+
+  /* About */
+
+  .about-strip {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+
+    padding: 5rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .about-strip h2 {
+    font-size: 2rem;
+  }
+
+  .about-strip > p {
+    margin: 1.8rem 0 0;
+
+    font-family: var(--font-reading);
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+
+  .strip-links {
+    grid-column: 2;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .strip-links a {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .strip-links a span {
+    margin-left: 0.35rem;
+    color: var(--color-green);
+  }
+
+  .strip-links a:hover {
+    color: var(--color-warm);
+  }
+
+  /* Terminal */
+
+  .terminal {
+    margin: 1rem 0 6rem;
+
+    overflow: hidden;
+
+    border: 1px solid var(--color-border);
+    background: color-mix(
+      in srgb,
+      var(--color-heading) 4%,
+      var(--color-background)
+    );
+  }
+
+  .terminal-bar {
+    display: flex;
+    gap: 0.45rem;
+
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-bar span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  .terminal-bar span:first-child {
+    background: var(--color-green);
+  }
+
+  .terminal-body {
+    padding: 1.5rem;
+
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.8;
+  }
+
+  .terminal-body p {
+    margin: 0;
+  }
+
+  .prompt {
+    color: var(--color-green);
+  }
+
+  .symbol {
+    color: var(--color-muted);
+  }
+
+  .path {
+    color: var(--color-warm);
+  }
+
+  .command {
+    color: var(--color-heading);
+  }
+
+  .terminal-output {
+    margin: 0.25rem 0 !important;
+    color: var(--color-muted);
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.9rem;
+    margin-left: 0.15rem;
+    vertical-align: -0.15rem;
+    background: var(--color-green);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      min-height: auto;
+      padding: 4rem 0 5rem;
+    }
+
+    .section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .post {
+      grid-template-columns: 1.5rem 1fr;
+    }
+
+    .post-arrow {
+      display: none;
+    }
+
+    .about-strip {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .about-strip > p {
+      margin-top: 0;
+    }
+
+    .strip-links {
+      grid-column: auto;
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .button {
+      justify-content: space-between;
+    }
+  }
+</style>
