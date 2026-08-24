@@ -1,40 +1,10 @@
-/* @font-face {
-  font-family: "Geist Mono";
-  src: url("/fonts/GeistMono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Geist Mono";
-  src: url("/fonts/GeistMono-Medium.woff2") format("woff2");
-  font-weight: 500 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Propo";
-  src: url("/fonts/Propo-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Propo";
-  src: url("/fonts/Propo-Medium.woff2") format("woff2");
-  font-weight: 500 600;
-  font-style: normal;
-  font-display: swap;
-} */
-
 :root {
   /* Fonts */
-
-  --font-reading: "GeistMono Nerd Font Propo", sans-serif;
-  --font-mono: "GeistMono Nerd Font Mono", monospace;
+    
+  --font-reading: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
+  /* --font-reading: "Geist", sans-serif; */
+  /* --font-mono: "Geist Mono", monospace; */
 
   /* Mountain */
 

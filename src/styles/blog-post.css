@@ -252,7 +252,7 @@
 }
 
 .content code {
-  font-family: "GeistMono Nerd Font Mono";
+  font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: -4;
 

@@ -1,4 +1,4 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 
 import mountain from "./src/styles/mountain-shiki.json";
 
@@ -12,4 +12,17 @@ export default defineConfig({
   },
 
   integrations: [mdx()],
+
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: "Geist",
+      cssVariable: "--font-geist"
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Geist Mono",
+      cssVariable: "--font-geist-mono"
+    }
+  ]
 });
